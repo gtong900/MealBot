@@ -2,10 +2,12 @@
 A serverless dining concierge chatbot implemented with AWS Lex, Lambda, API Gateway, Cognito, S3 and Yelp API.
 
 ## INTRODUCTION:
-##### Log In
-You can sign up on our site or log in via third-party account like Google.
+#### Log In
+You can sign up on our site or log in via third-party account like Google.  
+Vist from [here](https://aceyuanchatbotsign.auth.us-west-2.amazoncognito.com/login?response_type=token&client_id=7v30pltq6mgg3boilfm9cv3ukg&redirect_uri=https://s3-us-west-2.amazonaws.com/cld-cmpt-chatbot/index.html)
 
-##### How To Use
+
+#### How To Use
 
 1. First, user can use ‘hello’ or some other greeting sentences to invoke the chat bot and bot will use hello response set in AutoHelloMesage intent to guide user how to get suggestions.
 
