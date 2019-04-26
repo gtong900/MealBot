@@ -56,12 +56,12 @@ def amount_validation(amount):
 def order_validation(event, foodtype, location, date, time, amount):
     session_attributes = event['sessionAttributes']
     intent_name = event['currentIntent']['name']
-    if foodtype is not None and not foodtype_validation(foodtype):
-        # when food type is not supported
-        slot_to_elicit = 'FoodType'
-        message = 'We do not support {} cuisine yet, our most popular cuisine is indian cuisine'.format(foodtype)
-        # return build_response(session_attributes, intent_name, slots, slot_to_elicit, message)
-        return build_validation_result(False, slot_to_elicit, message)
+    # if foodtype is not None and not foodtype_validation(foodtype):
+    #     # when food type is not supported
+    #     slot_to_elicit = 'FoodType'
+    #     message = 'We do not support {} cuisine yet, our most popular cuisine is indian cuisine'.format(foodtype)
+    #     # return build_response(session_attributes, intent_name, slots, slot_to_elicit, message)
+    #     return build_validation_result(False, slot_to_elicit, message)
 
     if location is not None and not location_validation(location):
         # when location is not supported

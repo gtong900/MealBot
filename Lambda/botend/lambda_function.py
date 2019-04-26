@@ -1,5 +1,8 @@
 import YelpFusion
 import intent_validation as vali
+import boto3
+
+SQS = boto3.client('sqs')
 
 
 def order_food(intent_request):
@@ -8,6 +11,7 @@ def order_food(intent_request):
     date = get_slots(intent_request)["Date"]
     time = get_slots(intent_request)["Time"]
     amount = get_slots(intent_request)["Amount"]
+    email = get_slots(intent_request)['Email']
     source = intent_request['invocationSource']
     if source == 'DialogCodeHook':
         slots = get_slots(intent_request)
@@ -24,7 +28,41 @@ def order_food(intent_request):
                                                                                    'sessionAttributes'] is not None else {}
             return delegate(output_session_attributes, intent_request["currentIntent"]["slots"])
     response = None
-    suggestions = searching(foodtype, location, date, time, amount)
+    # suggestions = searching(foodtype, location, date, time, amount)
+    
+    #send message to SQS - START
+    response = SQS.send_message(
+        QueueUrl='https://sqs.us-west-2.amazonaws.com/321471117150/mealbot-queue',
+        MessageBody='intent information',
+        MessageAttributes={
+            'Cuisine': {
+                'DataType': 'String',
+                'StringValue': foodtype
+            },
+            'Location': {
+                'DataType': 'String',
+                'StringValue': location
+            },
+            'Date': {
+                'DataType': 'String',
+                'StringValue': date
+            },
+            'Time': {
+                'DataType': 'String',
+                'StringValue': time
+            },
+            'People': {
+                'DataType': 'String',
+                'StringValue': amount
+            },
+            'Email': {
+                'DataType': 'String',
+                'StringValue': email
+            }
+        }
+    )
+    #send message to SQS - END
+    
     response = {
         "dialogAction":
             {
@@ -32,7 +70,7 @@ def order_food(intent_request):
                 "type": "Close", "message":
                 {
                     "contentType": "PlainText",
-                    "content": "Here are our suggestions for " + amount + " people:" + suggestions
+                    "content": "An email will send to your email address shortly"
                 }
             }
     }
